@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0F;
+  --bg2:#111118;
+  --bg3:#1A1A26;
+  --gold:#C8A97E;
+  --gold2:#E2C9A0;
+  --text:#F0EDE8;
+  --muted:#9B97A0;
+  --dim:#3A3848;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:400;overflow-x:hidden;line-height:1.6}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;height:68px;
+  background:rgba(10,10,15,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(200,169,126,0.12);
+  transition:all .3s ease;
+}
+.nav-logo{font-family:'Cormorant Garant',serif;font-size:22px;font-weight:600;color:var(--gold);letter-spacing:.04em}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-cta{
+  font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  padding:10px 22px;border:1px solid var(--gold);color:var(--gold);
+  text-decoration:none;border-radius:2px;transition:all .2s;
+}
+.nav-cta:hover{background:var(--gold);color:var(--bg)}
+
+section{padding:120px 10%}
+
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  padding-top:140px;padding-bottom:80px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-20%;right:-10%;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,169,126,0.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:32px;opacity:0;
+  animation:fadeUp .7s ease .2s forwards;
+}
+.hero-title{
+  font-family:'Cormorant Garant',serif;
+  font-size:clamp(52px,8vw,108px);line-height:1.02;font-weight:600;
+  margin-bottom:32px;overflow:hidden;
+}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .word{
+  display:inline-block;opacity:0;transform:translateY(100%);
+  animation:slideUp .8s cubic-bezier(.16,1,.3,1) forwards;
+}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-title .underline-gold{
+  position:relative;display:inline-block;
+}
+.hero-title .underline-gold::after{
+  content:'';position:absolute;bottom:-6px;left:0;height:2px;
+  width:0;background:var(--gold);
+  animation:lineExpand 1s ease 1.2s forwards;
+}
+.hero-desc{
+  font-size:17px;font-weight:300;color:var(--muted);max-width:520px;
+  line-height:1.75;margin-bottom:52px;
+  opacity:0;animation:fadeUp .7s ease .9s forwards;
+}
+.hero-desc strong{color:var(--text);font-weight:500}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp .7s ease 1.1s forwards}
+.btn-primary{
+  font-size:13px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;
+  padding:15px 36px;background:var(--gold);color:var(--bg);border-radius:2px;
+  text-decoration:none;transition:all .2s;border:1px solid var(--gold);
+}
+.btn-primary:hover{background:var(--gold2);border-color:var(--gold2)}
+.btn-secondary{
+  font-size:13px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;
+  padding:15px 36px;border:1px solid var(--dim);color:var(--muted);
+  text-decoration:none;border-radius:2px;transition:all .2s;
+}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.hero-stats{
+  display:flex;gap:60px;margin-top:80px;padding-top:48px;
+  border-top:1px solid var(--dim);
+  opacity:0;animation:fadeUp .7s ease 1.3s forwards;
+}
+.stat-num{font-family:'Cormorant Garant',serif;font-size:44px;font-weight:600;color:var(--gold);line-height:1}
+.stat-label{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:6px}
+
+.section-label{
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:60px;display:flex;align-items:center;gap:20px;
+}
+.section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--gold);opacity:.4}
+
+.section-title{
+  font-family:'Cormorant Garant',serif;font-size:clamp(36px,5vw,60px);
+  font-weight:600;line-height:1.1;margin-bottom:20px;
+}
+.section-subtitle{font-size:16px;color:var(--muted);max-width:540px;line-height:1.7}
+
+.marquee-section{padding:0;overflow:hidden;border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);background:var(--bg2)}
+.marquee-label{
+  text-align:center;font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);padding:36px 0 28px;
+}
+.marquee-track{display:flex;overflow:hidden;padding-bottom:36px}
+.marquee-inner{display:flex;gap:0;animation:marquee 22s linear infinite;white-space:nowrap}
+.marquee-inner:hover{animation-play-state:paused}
+.company-chip{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:0 52px;font-size:18px;font-weight:500;
+  font-family:'Cormorant Garant',serif;color:var(--muted);letter-spacing:.02em;
+  border-right:1px solid var(--dim);transition:color .3s;flex-shrink:0;
+}
+.company-chip:hover{color:var(--gold)}
+.company-dot{width:5px;height:5px;border-radius:50%;background:var(--dim)}
+
+.features{background:var(--bg2)}
+.feature-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--dim);margin-top:72px;border:1px solid var(--dim);
+}
+.feature-card{
+  background:var(--bg2);padding:48px 40px;
+  transition:background .3s;cursor:default;
+}
+.feature-card:hover{background:var(--bg3)}
+.feat-icon{
+  width:44px;height:44px;border:1px solid var(--dim);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:28px;
+  transition:border-color .3s;
+}
+.feature-card:hover .feat-icon{border-color:var(--gold)}
+.feat-icon svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.feat-title{font-family:'Cormorant Garant',serif;font-size:22px;font-weight:600;margin-bottom:12px}
+.feat-desc{font-size:14px;color:var(--muted);line-height:1.7}
+.feat-tag{
+  display:inline-block;margin-top:20px;font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold);opacity:.7;
+}
+
+.work{background:var(--bg)}
+.work-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:72px;background:var(--dim)}
+.work-item{
+  background:var(--bg);padding:52px 48px;position:relative;overflow:hidden;
+  transition:background .3s;
+}
+.work-item::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--gold);transform:scaleX(0);transform-origin:left;
+  transition:transform .4s ease;
+}
+.work-item:hover::before{transform:scaleX(1)}
+.work-item:hover{background:var(--bg2)}
+.work-num{font-family:'Cormorant Garant',serif;font-size:60px;font-weight:600;color:var(--dim);line-height:1;margin-bottom:24px}
+.work-title{font-family:'Cormorant Garant',serif;font-size:26px;font-weight:600;margin-bottom:10px}
+.work-co{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.work-desc{font-size:14px;color:var(--muted);line-height:1.7}
+.work-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.tag{font-size:11px;padding:5px 12px;border:1px solid var(--dim);color:var(--muted);border-radius:20px;letter-spacing:.05em}
+
+.about{background:var(--bg2)}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.about-img{
+  aspect-ratio:4/5;background:var(--bg3);border:1px solid var(--dim);
+  position:relative;overflow:hidden;
+}
+.about-img::after{
+  content:'AN';font-family:'Cormorant Garant',serif;font-size:120px;font-weight:600;
+  color:rgba(200,169,126,0.06);position:absolute;bottom:-20px;right:-10px;line-height:1;
+}
+.about-accent{
+  position:absolute;top:30px;left:30px;right:30px;bottom:30px;
+  border:1px solid rgba(200,169,126,0.15);
+}
+.about-tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:32px}
+
+.contact{background:var(--bg);text-align:center;position:relative;overflow:hidden}
+.contact::before{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,169,126,0.05) 0%,transparent 60%);
+  pointer-events:none;
+}
+.contact-title{font-family:'Cormorant Garant',serif;font-size:clamp(48px,6vw,80px);font-weight:600;line-height:1.08;margin-bottom:24px}
+.contact-sub{font-size:16px;color:var(--muted);max-width:440px;margin:0 auto 48px;line-height:1.7}
+.contact-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.contact-link{
+  font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  padding:12px 28px;border:1px solid var(--dim);color:var(--muted);
+  text-decoration:none;border-radius:2px;transition:all .2s;
+}
+.contact-link:hover{border-color:var(--gold);color:var(--gold)}
+
+footer{
+  border-top:1px solid var(--dim);padding:32px 10%;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:var(--muted);letter-spacing:.04em;
+}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
+@keyframes lineExpand{from{width:0}to{width:100%}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">A.N.</div>
+  <ul class="nav-links">
+    <li><a href="#expertise">Expertise / Chuyên môn</a></li>
+    <li><a href="#work">Work / Dự án</a></li>
+    <li><a href="#about">About / Giới thiệu</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Let's Talk</a>
+</nav>
+
+<section class="hero" id="home">
+  <p class="hero-eyebrow">Marketing Manager · Ho Chi Minh City</p>
+  <h1 class="hero-title">
+    <span class="line">
+      <span class="word" style="animation-delay:.3s">Crafting</span>&nbsp;
+      <span class="word" style="animation-delay:.42s"><em>Brands</em></span>
+    </span>
+    <span class="line">
+      <span class="word" style="animation-delay:.54s">That</span>&nbsp;
+      <span class="word underline-gold" style="animation-delay:.66s">Move</span>&nbsp;
+      <span class="word" style="animation-delay:.78s">People</span>
+    </span>
+  </h1>
+  <p class="hero-desc">
+    Tôi là <strong>An Nguyễn</strong> — Marketing Manager với hơn <strong>8 năm kinh nghiệm</strong> xây dựng thương hiệu và chiến lược tăng trưởng cho các công ty từ startup đến tập đoàn đa quốc gia.
+  </p>
+  <div class="hero-ctas">
+    <a href="#work" class="btn-primary">View My Work</a>
+    <a href="#contact" class="btn-secondary">Get In Touch</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">8+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div>
+      <div class="stat-num">40+</div>
+      <div class="stat-label">Campaigns Launched</div>
+    </div>
+    <div>
+      <div class="stat-num">$12M</div>
+      <div class="stat-label">Revenue Generated</div>
+    </div>
+    <div>
+      <div class="stat-num">3×</div>
+      <div class="stat-label">Avg. ROI Delivered</div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-section">
+  <p class="marquee-label">Companies I've worked with · Các công ty đã cộng tác</p>
+  <div class="marquee-track">
+    <div class="marquee-inner" id="marqueeInner">
+      <span class="company-chip"><span class="company-dot"></span>Unilever</span>
+      <span class="company-chip"><span class="company-dot"></span>Masan Group</span>
+      <span class="company-chip"><span class="company-dot"></span>Grab Vietnam</span>
+      <span class="company-chip"><span class="company-dot"></span>L'Oréal</span>
+      <span class="company-chip"><span class="company-dot"></span>VinGroup</span>
+      <span class="company-chip"><span class="company-dot"></span>Shopee</span>
+      <span class="company-chip"><span class="company-dot"></span>Nestlé</span>
+      <span class="company-chip"><span class="company-dot"></span>FPT Corporation</span>
+      <span class="company-chip"><span class="company-dot"></span>Unilever</span>
+      <span class="company-chip"><span class="company-dot"></span>Masan Group</span>
+      <span class="company-chip"><span class="company-dot"></span>Grab Vietnam</span>
+      <span class="company-chip"><span class="company-dot"></span>L'Oréal</span>
+      <span class="company-chip"><span class="company-dot"></span>VinGroup</span>
+      <span class="company-chip"><span class="company-dot"></span>Shopee</span>
+      <span class="company-chip"><span class="company-dot"></span>Nestlé</span>
+      <span class="company-chip"><span class="company-dot"></span>FPT Corporation</span>
+    </div>
+  </div>
+</div>
+
+<section class="features" id="expertise">
+  <div class="section-label">What I Do · Chuyên môn</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:0">
+    <h2 class="section-title">A complete<br><em style="font-style:italic;color:var(--gold)">marketing</em><br>toolkit.</h2>
+    <p class="section-subtitle">Từ chiến lược thương hiệu đến thực thi campaign — tôi kết hợp tư duy sáng tạo và dữ liệu để tạo ra kết quả đo lường được.</p>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      </div>
+      <h3 class="feat-title">Brand Strategy</h3>
+      <p class="feat-desc">Xây dựng định vị thương hiệu rõ ràng, tạo ra câu chuyện nhất quán từ nội bộ đến thị trường — và đo lường sức ảnh hưởng theo thời gian thực.</p>
+      <span class="feat-tag">Chiến lược thương hiệu</span>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 3h18v18H3zM3 9h18M9 21V9"/></svg>
+      </div>
+      <h3 class="feat-title">Integrated Campaigns</h3>
+      <p class="feat-desc">Lên kế hoạch và thực thi chiến dịch đa kênh — từ digital, OOH đến event — với thông điệp nhất quán và KPI rõ ràng ở từng giai đoạn.</p>
+      <span class="feat-tag">Campaign 360°</span>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3 class="feat-title">Growth Marketing</h3>
+      <p class="feat-desc">Phân tích dữ liệu, tối ưu funnel và thiết kế thí nghiệm A/B để tăng tốc tăng trưởng có kiểm soát — không đốt ngân sách, có kết quả thật.</p>
+      <span class="feat-tag">Data-driven Growth</span>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3 class="feat-title">Team Leadership</h3>
+      <p class="feat-desc">Quản lý và phát triển đội ngũ marketing từ 3–15 người. Tạo văn hóa làm việc có mục tiêu rõ ràng, phản hồi trực tiếp và kết quả đo được.</p>
+      <span class="feat-tag">Leadership</span>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <h3 class="feat-title">Content & Storytelling</h3>
+      <p class="feat-desc">Tạo ra nội dung có chiều sâu, phù hợp từng kênh — từ bài viết long-form đến video script — xây dựng niềm tin và tạo ra organic traction.</p>
+      <span class="feat-tag">Content Strategy</span>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3 class="feat-title">Market Research</h3>
+      <p class="feat-desc">Nghiên cứu thị trường, phân tích đối thủ và insight người dùng — biến dữ liệu thô thành quyết định chiến lược rõ ràng và có cơ sở.</p>
+      <span class="feat-tag">Nghiên cứu thị trường</span>
+    </div>
+  </div>
+</section>
+
+<section class="work" id="work">
+  <div class="section-label">Selected Work · Dự án nổi bật</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end">
+    <h2 class="section-title">Results that<br><em style="font-style:italic;color:var(--gold)">speak</em><br>for themselves.</h2>
+    <p class="section-subtitle">Mỗi dự án là một bài toán kinh doanh thực tế — với mục tiêu cụ thể, chiến lược được kiểm chứng và kết quả đo lường minh bạch.</p>
+  </div>
+  <div class="work-grid">
+    <div class="work-item">
+      <div class="work-num">01</div>
+      <div class="work-co">Grab Vietnam · 2023</div>
+      <h3 class="work-title">GrabFood Brand Relaunch</h3>
+      <p class="work-desc">Dẫn dắt toàn bộ chiến dịch tái định vị thương hiệu GrabFood tại Việt Nam — từ nghiên cứu insight đến thực thi 360° trên 6 kênh đồng thời. Kết quả: +47% brand awareness, +23% order volume trong Q4.</p>
+      <div class="work-tags">
+        <span class="tag">Brand Strategy</span>
+        <span class="tag">360° Campaign</span>
+        <span class="tag">Digital</span>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-num">02</div>
+      <div class="work-co">L'Oréal · 2022</div>
+      <h3 class="work-title">Youth Acquisition Strategy</h3>
+      <p class="work-desc">Thiết kế chiến lược tiếp cận Gen Z cho 3 thương hiệu thuộc L'Oréal. Phát triển influencer framework mới, tích hợp TikTok vào media mix và tăng trưởng 68% engagement rate so với năm trước.</p>
+      <div class="work-tags">
+        <span class="tag">Gen Z</span>
+        <span class="tag">Influencer</span>
+        <span class="tag">Social</span>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-num">03</div>
+      <div class="work-co">Masan Group · 2021</div>
+      <h3 class="work-title">Chinsu Regional Expansion</h3>
+      <p class="work-desc">Phụ trách marketing cho chiến dịch mở rộng thị trường Chinsu sang 3 tỉnh miền Trung. Xây dựng kế hoạch go-to-market từ đầu và đạt 130% KPI phân phối trong 6 tháng đầu.</p>
+      <div class="work-tags">
+        <span class="tag">Go-to-market</span>
+        <span class="tag">FMCG</span>
+        <span class="tag">Regional</span>
+      </div>
+    </div>
+    <div class="work-item">
+      <div class="work-num">04</div>
+      <div class="work-co">Startup (Fintech) · 2020</div>
+      <h3 class="work-title">Zero-to-One Growth Engine</h3>
+      <p class="work-desc">Xây dựng toàn bộ marketing function từ đầu cho một fintech startup giai đoạn Series A — từ tuyển dụng, quy trình đến chiến lược. Đạt 50,000 người dùng đầu tiên trong 8 tháng với CAC thấp hơn benchmark 40%.</p>
+      <div class="work-tags">
+        <span class="tag">Startup</span>
+        <span class="tag">Growth</span>
+        <span class="tag">Fintech</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-img">
+      <div class="about-accent"></div>
+    </div>
+    <div>
+      <div class="section-label">About · Về tôi</div>
+      <h2 class="section-title">I believe great<br>marketing starts<br>with <em style="color:var(--gold)">empathy</em>.</h2>
+      <p style="font-size:16px;color:var(--muted);line-height:1.8;margin-top:24px">
+        Tôi không xây dựng chiến dịch — tôi xây dựng <strong style="color:var(--text);font-weight:500">mối liên hệ</strong> giữa thương hiệu và con người. Sau 8 năm làm việc với các tổ chức từ startup đến tập đoàn đa quốc gia, tôi nhận ra một điều: những chiến dịch tốt nhất đều bắt đầu từ việc lắng nghe thật sự.
+      </p>
+      <p style="font-size:16px;color:var(--muted);line-height:1.8;margin-top:16px">
+        Tôi làm việc ở giao điểm giữa <strong style="color:var(--text);font-weight:500">chiến lược, sáng tạo và dữ liệu</strong> — và tìm thấy sự thỏa mãn khi ba thứ đó cùng tạo ra tác động thực sự đo được.
+      </p>
+      <div class="about-tag-row">
+        <span class="tag">Brand Building</span>
+        <span class="tag">Bilingual (EN/VI)</span>
+        <span class="tag">HCMC Based</span>
+        <span class="tag">Open to Remote</span>
+      </div>
+      <div style="margin-top:40px;display:flex;gap:40px">
+        <div>
+          <div style="font-family:'Cormorant Garant',serif;font-size:36px;font-weight:600;color:var(--gold)">MBA</div>
+          <div style="font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:4px">RMIT University</div>
+        </div>
+        <div>
+          <div style="font-family:'Cormorant Garant',serif;font-size:36px;font-weight:600;color:var(--gold)">CIM</div>
+          <div style="font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-top:4px">Certified Marketer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="section-label" style="justify-content:center;margin-bottom:48px">Contact · Liên hệ<span style="display:none"></span></div>
+  <h2 class="contact-title">Ready to build<br>something<br><em style="color:var(--gold)">remarkable?</em></h2>
+  <p class="contact-sub">Dù là dự án mới, cơ hội hợp tác hay chỉ muốn trao đổi về marketing — hộp thư của tôi luôn mở.</p>
+  <a href="mailto:an.nguyen@email.com" class="btn-primary" style="display:inline-block;margin-bottom:32px">an.nguyen@email.com</a>
+  <div class="contact-links">
+    <a href="#" class="contact-link">LinkedIn</a>
+    <a href="#" class="contact-link">Facebook</a>
+    <a href="#" class="contact-link">Download CV</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2024 An Nguyễn · Marketing Manager</span>
+  <span style="font-family:'Cormorant Garant',serif;font-size:18px;font-weight:600;color:var(--gold)">A.N.</span>
+  <span>Ho Chi Minh City, Vietnam</span>
+</footer>
+
+<script>
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>60){nav.style.boxShadow='0 4px 40px rgba(0,0,0,.4)'}
+  else{nav.style.boxShadow='none'}
+});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  })
+});
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.opacity='1';
+      e.target.style.transform='translateY(0)';
+    }
+  })
+},{threshold:.1});
+document.querySelectorAll('.feature-card,.work-item,.stat-num').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity .6s ease, transform .6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
